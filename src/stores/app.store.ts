@@ -1,20 +1,9 @@
 import { defineStore } from 'pinia'
+import type { Item } from '@/models'
+import { BASE_URL } from '@/consts'
+import { buildRequestParams } from '@/utils'
+import { useFilterStore } from './filter.store'
 import { useMessageStore } from './message.store'
-
-interface ItemRating {
-  rate: number
-  count: number
-}
-
-export interface Item {
-  id: string
-  category: string
-  title: string
-  description: string
-  image: string
-  price: number
-  rating: ItemRating
-}
 
 interface AppState {
   isLoading: boolean
@@ -29,7 +18,9 @@ export const useAppStore = defineStore('appStore', {
     async getItems() {
       try {
         this.isLoading = true
-        const response = await fetch('https://fakestoreapi.com/products')
+        const filterStore = useFilterStore()
+        const queryParams = buildRequestParams(filterStore)
+        const response = await fetch(`${BASE_URL}${queryParams}`)
         this.itemList = await response.json()
       } catch (err) {
         const messageStore = useMessageStore()

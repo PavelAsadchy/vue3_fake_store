@@ -12,3 +12,9 @@ export interface Item {
   price: number
   rating: ItemRating
 }
+
+export interface FilterOption {
+  label: string
+  value: number | string | null
+  default?: boolean
+}

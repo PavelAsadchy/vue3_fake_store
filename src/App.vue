@@ -5,12 +5,15 @@ import HeaderSection from './components/HeaderSection.vue'
 import FooterSection from './components/FooterSection.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import MainSection from './components/MainSection.vue'
+import SearchControls from './components/SearchControls.vue'
 </script>
 
 <template>
   <v-app>
     <ThemeProvider>
       <HeaderSection />
+
+      <SearchControls />
 
       <MainSection />
 
