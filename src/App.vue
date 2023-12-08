@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import { useAppStore } from '@/stores/app.store'
 import ThemeProvider from './components/providers/ThemeProvider.vue'
 import HeaderSection from './components/HeaderSection.vue'
 import FooterSection from './components/FooterSection.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import MainSection from './components/MainSection.vue'
 import SearchControls from './components/SearchControls.vue'
+
+const appStore = useAppStore()
+
+onMounted(() => appStore.initItemListTotal())
 </script>
 
 <template>

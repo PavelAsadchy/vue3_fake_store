@@ -6,28 +6,46 @@ import { useFilterStore } from './filter.store'
 import { useMessageStore } from './message.store'
 
 interface AppState {
+  _itemListTotal: Item[]
   isLoading: boolean
-  itemList: Item[]
+  displayItemList: Item[]
   search: string
   selected: any | null
 }
 
 export const useAppStore = defineStore('appStore', {
-  state: (): AppState => ({ isLoading: false, itemList: [], search: '', selected: null }),
+  state: (): AppState => ({
+    _itemListTotal: [],
+    isLoading: false,
+    displayItemList: [],
+    search: '',
+    selected: null
+  }),
   actions: {
+    async initItemListTotal() {
+      const response = await fetch(`${BASE_URL}`)
+      this._itemListTotal = await response.json()
+    },
     async getItems() {
       try {
         this.isLoading = true
         const filterStore = useFilterStore()
+        filterStore.page = 1
         const queryParams = buildRequestParams(filterStore)
         const response = await fetch(`${BASE_URL}${queryParams}`)
-        this.itemList = await response.json()
+        this.displayItemList = await response.json()
       } catch (err) {
         const messageStore = useMessageStore()
         messageStore.showMessage('Smth went wrong')
       } finally {
         this.isLoading = false
       }
+    },
+    paginateItems(start: number, end: number) {
+      this.displayItemList = this._itemListTotal.slice(start, end)
     }
+  },
+  getters: {
+    totalItemCount: (state) => state?._itemListTotal?.length
   }
 })
