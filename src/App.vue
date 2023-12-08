@@ -19,9 +19,9 @@ onMounted(() => appStore.initItemListTotal())
     <ThemeProvider>
       <HeaderSection />
 
-      <SearchControls />
+      <!-- <SearchControls />
 
-      <MainSection />
+      <MainSection /> -->
 
       <!-- <header>
         <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
@@ -34,9 +34,9 @@ onMounted(() => appStore.initItemListTotal())
             <RouterLink to="/about">About</RouterLink>
           </nav>
         </div>
-      </header>
+      </header> -->
 
-      <RouterView /> -->
+      <RouterView />
 
       <FooterSection />
     </ThemeProvider>

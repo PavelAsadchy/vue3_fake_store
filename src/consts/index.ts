@@ -55,3 +55,5 @@ export const CATEGORIES: FilterOption[] = [
     value: `women's clothing`
   }
 ]
+
+export const NAVIGATION_ROUTES = ['Home', 'About']

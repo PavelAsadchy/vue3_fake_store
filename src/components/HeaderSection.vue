@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
+import { NAVIGATION_ROUTES } from '@/consts'
 
 const toggleTheme = inject<(value: unknown) => void>('toggleTheme')
+const drawer = ref(false)
 </script>
 
 <template>
@@ -11,7 +13,7 @@ const toggleTheme = inject<(value: unknown) => void>('toggleTheme')
     </template>
 
     <template v-slot:prepend>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     </template>
 
     <v-app-bar-title>Fake store</v-app-bar-title>
@@ -38,4 +40,20 @@ const toggleTheme = inject<(value: unknown) => void>('toggleTheme')
       @update:model-value="toggleTheme"
     ></v-switch>
   </v-app-bar>
+
+  <v-navigation-drawer v-model="drawer" location="top" temporary>
+    <v-list>
+      <v-list-item
+        v-for="(item, i) in NAVIGATION_ROUTES"
+        :key="i"
+        :value="item"
+        color="primary"
+        variant="plain"
+      >
+        <RouterLink :to="item.toLowerCase()"
+          ><v-list-item-title>{{ item }}</v-list-item-title>
+        </RouterLink>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>
