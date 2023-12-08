@@ -19,7 +19,7 @@ watch(page, () => filterStore.updatePage())
 </script>
 
 <template>
-  <v-container class="bg-surface-variant">
+  <v-container>
     <v-row no-gutters>
       <v-col cols="12" sm="4">
         <v-select
@@ -68,3 +68,9 @@ watch(page, () => filterStore.updatePage())
     <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
   </v-container>
 </template>
+
+<style scoped>
+.v-pagination.v-theme--light {
+  color: white;
+}
+</style>

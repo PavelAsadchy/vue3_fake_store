@@ -12,7 +12,9 @@ provide<(value: unknown) => void>('toggleTheme', toggleTheme)
 </script>
 
 <template>
-  <v-theme-provider :theme="theme">
-    <slot></slot>
-  </v-theme-provider>
+  <v-parallax :src="theme === 'dark' ? 'src/assets/bg-dark.jpg' : 'src/assets/bg.jpg'">
+    <v-theme-provider :theme="theme">
+      <slot></slot>
+    </v-theme-provider>
+  </v-parallax>
 </template>

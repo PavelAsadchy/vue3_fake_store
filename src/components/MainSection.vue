@@ -9,7 +9,7 @@ watchEffect(() => appStore.getItems())
 </script>
 
 <template>
-  <v-container v-if="appStore.isLoading && !appStore.totalItemCount" class="bg-surface-variant">
+  <v-container v-if="appStore.isLoading && !appStore.totalItemCount">
     <v-row align-content="center" justify="center">
       <v-col cols="6">
         <v-progress-linear
@@ -22,7 +22,7 @@ watchEffect(() => appStore.getItems())
     </v-row>
   </v-container>
 
-  <v-container v-if="appStore.totalItemCount" class="bg-surface-variant">
+  <v-container v-if="appStore.totalItemCount">
     <v-row no-gutters>
       <v-col v-for="card in appStore.displayItemList" :key="card.id" cols="12" sm="4">
         <CardItem class="ma-2" :isLoading="appStore.isLoading" :item="card" />

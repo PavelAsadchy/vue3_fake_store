@@ -14,14 +14,14 @@ const toggleTheme = inject<(value: unknown) => void>('toggleTheme')
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
     </template>
 
-    <v-app-bar-title>Title</v-app-bar-title>
+    <v-app-bar-title>Fake store</v-app-bar-title>
 
-    <!-- <v-spacer></v-spacer> -->
-    <v-text-field variant="underlined"></v-text-field>
+    <v-spacer></v-spacer>
+    <!-- <v-text-field variant="underlined"></v-text-field>
 
     <v-btn icon>
       <v-icon>mdi-magnify</v-icon>
-    </v-btn>
+    </v-btn> -->
 
     <!-- <v-btn icon>
       <v-icon>mdi-heart</v-icon>
