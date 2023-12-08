@@ -2,8 +2,10 @@
 import type { Item } from '@/models'
 
 interface Props {
-  isLoading?: boolean
+  isLoading: boolean
   item: Item
+  onClickHandler: Function
+  detailed?: boolean
 }
 
 defineProps<Props>()
@@ -16,8 +18,8 @@ defineProps<Props>()
     min-width="250"
     type="image, list-item-two-line"
   >
-    <v-hover v-slot="{ isHovering, props }">
-      <v-card max-width="374" v-bind="props">
+    <v-hover :disabled="detailed" v-slot="{ isHovering, props }">
+      <v-card v-bind="props" :class="{ detailed }">
         <v-img cover height="250" :src="item.image"></v-img>
 
         <v-card-item>
@@ -31,7 +33,7 @@ defineProps<Props>()
         </v-card-item>
 
         <v-card-text>
-          <v-row align="center" class="mx-0">
+          <v-row class="mx-0">
             <v-rating
               :model-value="item.rating.rate"
               color="amber"
@@ -49,13 +51,23 @@ defineProps<Props>()
           <div class="description">{{ item.description }}</div>
         </v-card-text>
 
+        <template v-if="detailed">
+          <v-divider class="mx-4 mb-1"></v-divider>
+
+          <v-card-actions>
+            <v-btn color="deep-purple-lighten-2" variant="text" @click="onClickHandler"
+              >Close</v-btn
+            >
+          </v-card-actions>
+        </template>
+
         <v-overlay
           :model-value="isHovering"
           contained
           scrim="#036358"
           class="align-center justify-center"
         >
-          <v-btn variant="flat">See more info</v-btn>
+          <v-btn variant="flat" @click="() => onClickHandler(item.id)">See more info</v-btn>
         </v-overlay>
       </v-card>
     </v-hover>
@@ -70,6 +82,14 @@ defineProps<Props>()
   -webkit-line-clamp: 2; /* number of lines to show */
   line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+.detailed {
+  max-width: 374px;
+}
+.detailed .description {
+  display: block;
+  -webkit-line-clamp: none; /* number of lines to show */
+  line-clamp: none;
 }
 .v-skeleton-loader {
   background: transparent;

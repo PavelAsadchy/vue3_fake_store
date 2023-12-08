@@ -10,7 +10,7 @@ interface AppState {
   isLoading: boolean
   displayItemList: Item[]
   search: string
-  selected: any | null
+  selected: Item | null
 }
 
 export const useAppStore = defineStore('appStore', {
@@ -39,6 +39,15 @@ export const useAppStore = defineStore('appStore', {
         messageStore.showMessage('Smth went wrong')
       } finally {
         this.isLoading = false
+      }
+    },
+    async getSelectedItem(id: string) {
+      try {
+        const response = await fetch(`${BASE_URL}/${id}`)
+        this.selected = await response.json()
+      } catch (err) {
+        const messageStore = useMessageStore()
+        messageStore.showMessage('Smth went wrong')
       }
     },
     paginateItems(start: number, end: number) {

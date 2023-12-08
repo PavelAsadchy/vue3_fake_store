@@ -24,5 +24,13 @@ export const useFilterStore = defineStore('filterStore', {
       const end = start + +this.selectedLimit!.value!
       appStore.paginateItems(start, end)
     }
+  },
+  getters: {
+    paginationLength: (state) => {
+      const appStore = useAppStore()
+      if (!state?.selectedLimit?.value) return false
+
+      return Math.ceil(appStore?.totalItemCount / +state.selectedLimit.value)
+    }
   }
 })
