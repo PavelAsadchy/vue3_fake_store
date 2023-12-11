@@ -1,6 +1,6 @@
 import type { FilterOption } from '@/models'
 
-export const BASE_URL = 'https://fakestoreapi.com/products'
+export const BASE_URL = 'https://fakestoreapi.com'
 
 export const RESULTS_LIMIT_ITEMS: FilterOption[] = [
   {
@@ -57,3 +57,12 @@ export const CATEGORIES: FilterOption[] = [
 ]
 
 export const NAVIGATION_ROUTES = ['Home', 'About']
+
+export const MOCKED_AUTH_USER_DATA = {
+  username: 'mor_2314',
+  password: '83r5^_'
+}
+
+export enum LOCAL_VALUE_KEY {
+  AUTH = 'fake_store_auth_token'
+}

@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { useAppStore } from '@/stores/app.store'
 import ThemeProvider from './components/providers/ThemeProvider.vue'
 import HeaderSection from './components/HeaderSection.vue'
 import FooterSection from './components/FooterSection.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import MainSection from './components/MainSection.vue'
 import SearchControls from './components/SearchControls.vue'
-
-const appStore = useAppStore()
-
-onMounted(() => appStore.initItemListTotal())
 </script>
 
 <template>
@@ -46,9 +40,21 @@ onMounted(() => appStore.initItemListTotal())
 <style scoped>
 .v-application {
   max-width: 1280px;
+  min-height: 100dvh;
   margin: 0 auto;
   padding: 64px 0 40px;
   background: transparent;
+}
+
+::v-deep .v-application__wrap {
+  min-height: unset;
+}
+
+::v-deep .v-responsive__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 header {

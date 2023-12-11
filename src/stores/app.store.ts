@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia'
 import type { Item } from '@/models'
-import { BASE_URL } from '@/consts'
-import { buildRequestParams } from '@/utils'
+import { BASE_URL, LOCAL_VALUE_KEY, MOCKED_AUTH_USER_DATA } from '@/consts'
+import { buildRequestParams, checkLocalValue, setLocalValue } from '@/utils'
 import { useFilterStore } from './filter.store'
 import { useMessageStore } from './message.store'
 
 interface AppState {
+  isAuthenticated: boolean
   _itemListTotal: Item[]
   isLoading: boolean
   displayItemList: Item[]
@@ -15,6 +16,7 @@ interface AppState {
 
 export const useAppStore = defineStore('appStore', {
   state: (): AppState => ({
+    isAuthenticated: !!checkLocalValue(LOCAL_VALUE_KEY.AUTH),
     _itemListTotal: [],
     isLoading: false,
     displayItemList: [],
@@ -22,8 +24,32 @@ export const useAppStore = defineStore('appStore', {
     selected: null
   }),
   actions: {
+    async tryLogin(_username: string, _password: string) {
+      try {
+        this.isLoading = true
+        const response = await fetch(`${BASE_URL}/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(MOCKED_AUTH_USER_DATA)
+        })
+        const { token } = await response.json()
+
+        if (token) {
+          this.isAuthenticated = true
+          setLocalValue(LOCAL_VALUE_KEY.AUTH, token, 3600 * 24)
+          this.router.push({ name: 'Home' })
+        }
+      } catch (err) {
+        const messageStore = useMessageStore()
+        messageStore.showMessage('Unable to login')
+      } finally {
+        this.isLoading = false
+      }
+    },
     async initItemListTotal() {
-      const response = await fetch(`${BASE_URL}`)
+      const response = await fetch(`${BASE_URL}/products`)
       this._itemListTotal = await response.json()
     },
     async getItems() {
@@ -32,7 +58,7 @@ export const useAppStore = defineStore('appStore', {
         const filterStore = useFilterStore()
         filterStore.page = 1
         const queryParams = buildRequestParams(filterStore)
-        const response = await fetch(`${BASE_URL}${queryParams}`)
+        const response = await fetch(`${BASE_URL}/products${queryParams}`)
         this.displayItemList = await response.json()
       } catch (err) {
         const messageStore = useMessageStore()
@@ -43,7 +69,7 @@ export const useAppStore = defineStore('appStore', {
     },
     async getSelectedItem(id: string) {
       try {
-        const response = await fetch(`${BASE_URL}/${id}`)
+        const response = await fetch(`${BASE_URL}/products/${id}`)
         this.selected = await response.json()
       } catch (err) {
         const messageStore = useMessageStore()
