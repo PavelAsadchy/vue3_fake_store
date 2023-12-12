@@ -1,53 +1,29 @@
 import { defineStore } from 'pinia'
-import type { Item } from '@/models'
-import { BASE_URL, LOCAL_VALUE_KEY, MOCKED_AUTH_USER_DATA } from '@/consts'
-import { buildRequestParams, checkLocalValue, setLocalValue } from '@/utils'
+import type { Cart, Item } from '@/models'
+import { BASE_URL } from '@/consts'
+import { buildRequestParams } from '@/utils'
 import { useFilterStore } from './filter.store'
 import { useMessageStore } from './message.store'
 
 interface AppState {
-  isAuthenticated: boolean
   _itemListTotal: Item[]
   isLoading: boolean
   displayItemList: Item[]
   search: string
   selected: Item | null
+  cart: Cart | null
 }
 
 export const useAppStore = defineStore('appStore', {
   state: (): AppState => ({
-    isAuthenticated: !!checkLocalValue(LOCAL_VALUE_KEY.AUTH),
     _itemListTotal: [],
     isLoading: false,
     displayItemList: [],
     search: '',
-    selected: null
+    selected: null,
+    cart: null
   }),
   actions: {
-    async tryLogin(_username: string, _password: string) {
-      try {
-        this.isLoading = true
-        const response = await fetch(`${BASE_URL}/auth/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(MOCKED_AUTH_USER_DATA)
-        })
-        const { token } = await response.json()
-
-        if (token) {
-          this.isAuthenticated = true
-          setLocalValue(LOCAL_VALUE_KEY.AUTH, token, 3600 * 24)
-          this.router.push({ name: 'Home' })
-        }
-      } catch (err) {
-        const messageStore = useMessageStore()
-        messageStore.showMessage('Unable to login')
-      } finally {
-        this.isLoading = false
-      }
-    },
     async initItemListTotal() {
       const response = await fetch(`${BASE_URL}/products`)
       this._itemListTotal = await response.json()
@@ -71,6 +47,15 @@ export const useAppStore = defineStore('appStore', {
       try {
         const response = await fetch(`${BASE_URL}/products/${id}`)
         this.selected = await response.json()
+      } catch (err) {
+        const messageStore = useMessageStore()
+        messageStore.showMessage('Smth went wrong')
+      }
+    },
+    async getCart(id: string) {
+      try {
+        const response = await fetch(`${BASE_URL}/carts/${id}`)
+        this.cart = await response.json()
       } catch (err) {
         const messageStore = useMessageStore()
         messageStore.showMessage('Smth went wrong')

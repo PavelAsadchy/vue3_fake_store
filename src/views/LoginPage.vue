@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useAppStore } from '@/stores/app.store'
+import { useAuthStore } from '@/stores/auth.store'
 import { ref } from 'vue'
 
+const authStore = useAuthStore()
 const appStore = useAppStore()
 
 const userName = ref('')
@@ -17,11 +19,11 @@ const passwordRules = ref([(value: string) => !!value || 'Password is required']
 const showPassword = ref(false)
 const isFormValid = ref(false)
 
-const submitLogin = () => appStore.tryLogin(userName.value, password.value)
+const submitLogin = () => authStore.tryLogin(userName.value, password.value)
 </script>
 
 <template>
-  <v-sheet width="300" class="mx-auto">
+  <v-sheet width="300" class="mx-auto" rounded>
     <v-form fast-fail @submit.prevent="submitLogin" v-model="isFormValid">
       <v-text-field v-model="userName" label="User name" :rules="userNameRules"></v-text-field>
 

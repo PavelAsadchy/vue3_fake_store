@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import LoginPage from '@/views/LoginPage.vue'
-import { useAppStore } from '@/stores/app.store'
+import { useAuthStore } from '@/stores/auth.store'
 import { checkLocalValue } from '@/utils/index'
-import { LOCAL_VALUE_KEY } from '@/consts/index'
+import { LOCAL_VALUE_KEY, MOCKED_USER_DATA } from '@/consts/index'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,7 +15,8 @@ const router = createRouter({
     {
       path: '/',
       name: 'Home',
-      component: HomePage
+      component: HomePage,
+      beforeEnter: () => {}
     },
     {
       path: '/login',
@@ -37,16 +38,18 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, _from) => {
-  const appStore = useAppStore()
+  const authStore = useAuthStore()
   if (
     // make sure the user is authenticated
-    !appStore.isAuthenticated &&
-    // ❗️ Avoid an infinite redirect
+    !authStore.isAuthenticated &&
+    // Avoid an infinite redirect
     to.name !== 'Login'
   ) {
     // redirect the user to the login page
     return { name: 'Login' }
   }
+
+  if (!authStore.user && to.name !== 'Login') authStore.getUser(MOCKED_USER_DATA.id)
 })
 
 export default router

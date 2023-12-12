@@ -1,18 +1,26 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import { useAppStore } from '@/stores/app.store'
+import { useAuthStore } from '@/stores/auth.store'
 import CardItem from './CardItem.vue'
 
 const appStore = useAppStore()
+const authStore = useAuthStore()
 
 const details = ref(false)
 
 watchEffect(() => appStore.getItems())
 
+watchEffect(() => {
+  authStore.user && appStore.getCart(authStore.user.id)
+})
+
 const showDetails = (id: string) => {
   details.value = true
   appStore.getSelectedItem(id)
 }
+
+const addToCart = (id: string) => {}
 
 const closeDetails = () => {
   details.value = false
@@ -41,7 +49,7 @@ const closeDetails = () => {
           class="ma-2"
           :isLoading="appStore.isLoading"
           :item="card"
-          :onClickHandler="showDetails"
+          :onPrimaryActionClickHandler="showDetails"
         />
       </v-col>
     </v-row>
@@ -51,7 +59,8 @@ const closeDetails = () => {
     <CardItem
       :isLoading="!appStore.selected"
       :item="appStore.selected!"
-      :onClickHandler="closeDetails"
+      :onPrimaryActionClickHandler="addToCart"
+      :onSecondaryActionClickHandler="closeDetails"
       detailed
     />
   </v-dialog>

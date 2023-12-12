@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue'
-import { NAVIGATION_ROUTES } from '@/consts'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/stores/auth.store'
+import { MOCKED_USER_DATA, NAVIGATION_ROUTES } from '@/consts'
+import AvatarMenu from './AvatarMenu.vue'
 
+const authStore = useAuthStore()
+const { user } = storeToRefs(authStore)
 const toggleTheme = inject<(value: unknown) => void>('toggleTheme')
 const drawer = ref(false)
 </script>
@@ -39,6 +44,17 @@ const drawer = ref(false)
       false-icon="mdi-weather-sunny"
       @update:model-value="toggleTheme"
     ></v-switch>
+
+    <template v-if="user" v-slot:append>
+      <AvatarMenu
+        :img="MOCKED_USER_DATA.img"
+        :name="user.name"
+        :username="user.username"
+        :email="user.email"
+        :address="user.address"
+        :phone="user.phone"
+      />
+    </template>
   </v-app-bar>
 
   <v-navigation-drawer v-model="drawer" location="top" temporary>

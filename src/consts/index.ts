@@ -58,9 +58,11 @@ export const CATEGORIES: FilterOption[] = [
 
 export const NAVIGATION_ROUTES = ['Home', 'About']
 
-export const MOCKED_AUTH_USER_DATA = {
-  username: 'mor_2314',
-  password: '83r5^_'
+export const MOCKED_USER_DATA = {
+  id: '1',
+  username: 'johnd',
+  password: 'm38rmF$',
+  img: 'https://cdn.vuetifyjs.com/images/john.jpg'
 }
 
 export enum LOCAL_VALUE_KEY {

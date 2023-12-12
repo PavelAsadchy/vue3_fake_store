@@ -4,7 +4,8 @@ import type { Item } from '@/models'
 interface Props {
   isLoading: boolean
   item: Item
-  onClickHandler: Function
+  onPrimaryActionClickHandler: Function
+  onSecondaryActionClickHandler?: Function
   detailed?: boolean
 }
 
@@ -55,7 +56,17 @@ defineProps<Props>()
           <v-divider class="mx-4 mb-1"></v-divider>
 
           <v-card-actions>
-            <v-btn color="deep-purple-lighten-2" variant="text" @click="onClickHandler"
+            <v-btn
+              color="deep-purple-lighten-2"
+              variant="flat"
+              @click="() => onPrimaryActionClickHandler(item.id)"
+              >Add to cart</v-btn
+            >
+
+            <v-btn
+              color="deep-purple-lighten-2"
+              variant="text"
+              @click="onSecondaryActionClickHandler"
               >Close</v-btn
             >
           </v-card-actions>
@@ -67,7 +78,9 @@ defineProps<Props>()
           scrim="#036358"
           class="align-center justify-center"
         >
-          <v-btn variant="flat" @click="() => onClickHandler(item.id)">See more info</v-btn>
+          <v-btn variant="flat" @click="() => onPrimaryActionClickHandler(item.id)"
+            >See more info</v-btn
+          >
         </v-overlay>
       </v-card>
     </v-hover>
