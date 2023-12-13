@@ -28,19 +28,6 @@ const drawer = ref(false)
     <v-app-bar-title>Fake store</v-app-bar-title>
 
     <v-spacer></v-spacer>
-    <!-- <v-text-field variant="underlined"></v-text-field>
-
-    <v-btn icon>
-      <v-icon>mdi-magnify</v-icon>
-    </v-btn> -->
-
-    <!-- <v-btn icon>
-      <v-icon>mdi-heart</v-icon>
-    </v-btn>
-
-    <v-btn icon>
-      <v-icon>mdi-dots-vertical</v-icon>
-    </v-btn> -->
 
     <v-switch
       hide-details
