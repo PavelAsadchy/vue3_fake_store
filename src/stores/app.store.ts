@@ -63,9 +63,34 @@ export const useAppStore = defineStore('appStore', {
     },
     paginateItems(start: number, end: number) {
       this.displayItemList = this._itemListTotal.slice(start, end)
+    },
+    async addItemToCart(_productId: string) {
+      const foundProduct = this.cart?.products.find(({ productId }) => productId === _productId)
+      if (foundProduct) {
+        foundProduct.quantity = foundProduct.quantity + 1
+      } else {
+        this.cart?.products.push({ productId: _productId, quantity: 1 })
+      }
+    },
+    async removeItemFromCart(_productId: string) {
+      const foundProduct = this.cart?.products.find(({ productId }) => productId === _productId)
+      if (foundProduct?.quantity === 1) {
+        this.removeProductFromCart(_productId)
+      } else {
+        foundProduct!.quantity = foundProduct!.quantity - 1
+      }
+    },
+    async removeProductFromCart(_productId: string) {
+      const foundProduct = this.cart?.products.find(({ productId }) => productId === _productId)
+      if (foundProduct) {
+        this.cart!.products = this.cart!.products.filter(
+          ({ productId }) => productId !== _productId
+        )
+      }
     }
   },
   getters: {
-    totalItemCount: (state) => state?._itemListTotal?.length
+    totalItemCount: (state) => state?._itemListTotal?.length,
+    itemsInCart: (state) => state?.cart?.products?.length
   }
 })

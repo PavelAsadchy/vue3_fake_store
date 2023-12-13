@@ -48,6 +48,10 @@ export const useAuthStore = defineStore('authStore', {
       try {
         const response = await fetch(`${BASE_URL}/users/${id}`)
         this.user = await response.json()
+        const appStore = useAppStore()
+        appStore.initItemListTotal()
+        appStore.getItems()
+        this.user && appStore.getCart(this.user.id)
       } catch (err) {
         const messageStore = useMessageStore()
         messageStore.showMessage('Unable to login')

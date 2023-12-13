@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '@/views/HomePage.vue'
-import LoginPage from '@/views/LoginPage.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { checkLocalValue } from '@/utils/index'
 import { LOCAL_VALUE_KEY, MOCKED_USER_DATA } from '@/consts/index'
+import HomePage from '@/views/HomePage.vue'
+import LoginPage from '@/views/LoginPage.vue'
+import CartPage from '@/views/CartPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,8 +16,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'Home',
-      component: HomePage,
-      beforeEnter: () => {}
+      component: HomePage
     },
     {
       path: '/login',
@@ -25,6 +25,11 @@ const router = createRouter({
       beforeEnter: (to, _from) => {
         if (checkLocalValue(LOCAL_VALUE_KEY.AUTH)) return { name: 'Home' }
       }
+    },
+    {
+      path: '/cart',
+      name: 'Cart',
+      component: CartPage
     },
     {
       path: '/about',

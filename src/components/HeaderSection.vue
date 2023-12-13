@@ -2,11 +2,15 @@
 import { inject, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth.store'
+import { useAppStore } from '@/stores/app.store'
 import { MOCKED_USER_DATA, NAVIGATION_ROUTES } from '@/consts'
 import AvatarMenu from './AvatarMenu.vue'
 
 const authStore = useAuthStore()
+const appStore = useAppStore()
 const { user } = storeToRefs(authStore)
+const { itemsInCart } = storeToRefs(appStore)
+
 const toggleTheme = inject<(value: unknown) => void>('toggleTheme')
 const drawer = ref(false)
 </script>
@@ -45,6 +49,13 @@ const drawer = ref(false)
       @update:model-value="toggleTheme"
     ></v-switch>
 
+    <RouterLink to="/cart">
+      <v-btn icon class="cart">
+        <div v-if="itemsInCart" class="cart__num">{{ itemsInCart }}</div>
+        <v-icon>mdi-cart-variant</v-icon>
+      </v-btn>
+    </RouterLink>
+
     <template v-if="user" v-slot:append>
       <AvatarMenu
         :img="MOCKED_USER_DATA.img"
@@ -73,3 +84,28 @@ const drawer = ref(false)
     </v-list>
   </v-navigation-drawer>
 </template>
+
+<style scoped>
+.cart {
+  position: relative;
+}
+.cart__num {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  transform: translate(50%, 50%);
+  border-radius: 50%;
+  background-color: red;
+  font-size: 12px;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  background-color: transparent;
+}
+</style>

@@ -4,6 +4,7 @@ import type { Item } from '@/models'
 interface Props {
   isLoading: boolean
   item: Item
+  primaryActionTitle: string
   onPrimaryActionClickHandler: Function
   onSecondaryActionClickHandler?: Function
   detailed?: boolean
@@ -47,7 +48,7 @@ defineProps<Props>()
             <div class="text-grey ms-4">{{ item.rating.rate }} {{ item.rating.count }}</div>
           </v-row>
 
-          <div class="my-4 text-subtitle-1">$ • {{ item.price }}</div>
+          <div class="my-4 text-subtitle-1">$ • {{ item.price.toFixed(2) }}</div>
 
           <div class="description">{{ item.description }}</div>
         </v-card-text>
@@ -60,10 +61,11 @@ defineProps<Props>()
               color="deep-purple-lighten-2"
               variant="flat"
               @click="() => onPrimaryActionClickHandler(item.id)"
-              >Add to cart</v-btn
+              >{{ primaryActionTitle }}</v-btn
             >
 
             <v-btn
+              v-if="onSecondaryActionClickHandler"
               color="deep-purple-lighten-2"
               variant="text"
               @click="onSecondaryActionClickHandler"
@@ -78,9 +80,9 @@ defineProps<Props>()
           scrim="#036358"
           class="align-center justify-center"
         >
-          <v-btn variant="flat" @click="() => onPrimaryActionClickHandler(item.id)"
-            >See more info</v-btn
-          >
+          <v-btn variant="flat" @click="() => onPrimaryActionClickHandler(item.id)">
+            {{ primaryActionTitle }}
+          </v-btn>
         </v-overlay>
       </v-card>
     </v-hover>

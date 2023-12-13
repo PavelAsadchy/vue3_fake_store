@@ -56,7 +56,7 @@ export const CATEGORIES: FilterOption[] = [
   }
 ]
 
-export const NAVIGATION_ROUTES = ['Home', 'About']
+export const NAVIGATION_ROUTES = ['Home', 'Cart']
 
 export const MOCKED_USER_DATA = {
   id: '1',
